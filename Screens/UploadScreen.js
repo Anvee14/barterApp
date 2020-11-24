@@ -1,81 +1,113 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Modal, ScrollView, KeyboardAvoidingView, TouchableOpacity, TextInput } from 'react-native';
+import { StyleSheet, Text, View, Modal, ScrollView, KeyboardAvoidingView, TouchableOpacity, Alert, TextInput, KeyboardAvoidingViewBase } from 'react-native';
 import db from '../config'
 import * as firebase from 'firebase'
-export default class RequestScreen extends Component {
+import MyHeader from '../components/MyHeader'
+export default class BookRequestScreen extends Component {
+  constructor() {
+    super();
+    this.state = {
+      userId: firebase.auth().currentUser.email,
+      itemName: "",
+      price: ""
+    }
+  }
+  createUniqueId() {
+    return Math.random().toString(36).substring(7);
+  }
+  addRequest = (itemName, price) => {
+    var userId = this.state.userId
+    var randomRequestId = this.createUniqueId()
+    db.collection('requested_items').add({
+      "user_id": userId,
+      "item_name": itemName,
+      "price": price,
+      "request_id": randomRequestId,
+    })
+
+    this.setState({
+      itemName: '',
+      price: ''
+    })
+
+    return Alert.alert("Requested Successfully")
+  }
   render() {
     return (
-      <View >
-        <Text style={StyleSheet.container}>Upload</Text>
+      <View style={{ flex: 1 }}>
+        <MyHeader title="Request Item" navigation={this.props.navigation} />
+        <KeyboardAvoidingView style={styles.keyBoardStyle}>
+          <TextInput
+            style={[styles.formTextInput, { height: 100 }]}
+            placeholder={"Enter item name"}
+
+            onChangeText={(text) => {
+              this.setState({
+                itemName: text
+              })
+            }}
+            value={this.state.itemName}
+          />
+          <TextInput
+            style={[styles.formTextInput, { height: 100 }]}
+            placeholder={"Price"}
+            keyboardType='numeric'
+            onChangeText={(text) => {
+              this.setState({
+                price: text
+              })
+            }}
+            value={this.state.price}
+          />
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => { this.addRequest(this.state.itemName, this.state.price) }}
+          >
+            <Text>Request</Text>
+          </TouchableOpacity>
+        </KeyboardAvoidingView>
+
       </View>
     )
   }
+
+
+
+
 }
+
 const styles = StyleSheet.create({
-  container: {
+  keyBoardStyle: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
-  text: {
-    fontSize: 15,
-    marginTop: 10
-  },
-  scanButton: {
-
-    width: 150,
-    backgroundColor: 'lightblue',
-    borderRadius: 25,
-    borderColor: 'black',
-    borderWidth: 3,
-    fontWeight: 'bold',
-    fontSize: 15,
-    marginLeft: 'center',
-    marginRight: 'center',
-    textAlign: 'center',
-    marginTop: 10,
-  },
-
-
-  buttonText: {
-    fontWeight: 'bold',
-    fontSize: 15,
-
-  },
-  inputBox: {
-    width: 300,
-    height: 30,
-    marginTop: 10,
+  formTextInput: {
+    width: "75%",
+    height: 35,
+    alignSelf: 'center',
+    borderColor: '#ffab91',
+    borderRadius: 10,
     borderWidth: 1,
-    fontWeight: 'bold',
-    fontSize: 15,
-    borderWidth: 3,
-    borderRadius: 20,
-    borderColor: 'black',
-    lineHeight: 230,
-    marginLeft: 'center',
-    marginRight: 'center',
-    textAlign: 'center',
+    marginTop: 20,
+    padding: 20,
   },
-  submitButton: {
-    height: 30,
-    width: 150,
-    backgroundColor: 'rgb(255, 190, 28)',
-    borderRadius: 25,
-    borderColor: 'black',
-    borderWidth: 4,
-    fontWeight: 'bold',
-    fontSize: 17,
-    marginLeft: 'center',
-    marginRight: 'center',
-    textAlign: 'center',
-    marginTop: 30,
-  },
-  bookImage: {
-    width: 100,
-    height: 100,
-    alignItems: 'center',
+  button: {
+    width: "75%",
+    height: 50,
     justifyContent: 'center',
-    marginLeft: 100
-  }
-});
+    alignItems: 'center',
+    borderRadius: 10,
+    backgroundColor: "#ff5722",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 8,
+    },
+    shadowOpacity: 0.44,
+    shadowRadius: 10.32,
+    elevation: 16,
+    marginTop: 20
+  },
+}
+)

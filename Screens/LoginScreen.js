@@ -192,7 +192,7 @@ export default class LoginScreen extends Component {
         <View>
           <TextInput
             style={styles.loginBox}
-            placeholder="email"
+            placeholder="Enter Email"
             keyboardType='email-address'
             onChangeText={(text) => {
               this.setState({
