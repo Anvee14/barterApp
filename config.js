@@ -1,15 +1,15 @@
 import firebase from 'firebase'
 require("@firebase/firestore")
 var firebaseConfig = {
-    apiKey: "AIzaSyBOwVa_l4aUtNr7efkB-PFOMaZJtPp3C18",
-    authDomain: "booksanta-2e0b4.firebaseapp.com",
-    databaseURL: "https://booksanta-2e0b4.firebaseio.com",
-    projectId: "booksanta-2e0b4",
-    storageBucket: "booksanta-2e0b4.appspot.com",
-    messagingSenderId: "666966721637",
-    appId: "1:666966721637:web:c770201a412b1ce9cb328c"
-  };
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
+  apiKey: "AIzaSyBgfBIULKxpJOZk4iU2EFyTt4fpYZdGoRw",
+  authDomain: "barterapp-e39e0.firebaseapp.com",
+  databaseURL: "https://barterapp-e39e0.firebaseio.com",
+  projectId: "barterapp-e39e0",
+  storageBucket: "barterapp-e39e0.appspot.com",
+  messagingSenderId: "233675865359",
+  appId: "1:233675865359:web:6179fef91e0acd96de127a"
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
   
   export default firebase.firestore()
