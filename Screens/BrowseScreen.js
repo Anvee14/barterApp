@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, Modal, ScrollView, KeyboardAvoidingView, TouchableOpacity, TextInput } from 'react-native';
 import db from '../config'
 import * as firebase from 'firebase'
+import MyHeader from '../components/MyHeader'
 export default class RequestScreen extends Component {
   render() {
     return (
       <View >
-        <Text style={StyleSheet.container}>Browse!</Text>
+        <MyHeader title="Trade Item" navigation={this.props.navigation} />
+        <Text style={StyleSheet.container}></Text>
       </View>
     )
   }

@@ -39,7 +39,7 @@ export default class LoginScreen extends Component {
             address: this.state.address,
             password: this.state.pwd,
           })
-          return Alert.alert(
+          return alert(
             'User Added Successfully',
             '',
             [

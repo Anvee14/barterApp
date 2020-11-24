@@ -30,7 +30,7 @@ export default class BookRequestScreen extends Component {
       price: ''
     })
 
-    return Alert.alert("Requested Successfully")
+    return alert("Requested Successfully")
   }
   render() {
     return (
