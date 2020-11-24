@@ -1,83 +1,105 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Modal, ScrollView, KeyboardAvoidingView, TouchableOpacity, TextInput } from 'react-native';
+import {
+  StyleSheet, Text,
+  View, Modal, FlatList,
+  ScrollView, KeyboardAvoidingView,
+  TouchableOpacity, TextInput
+} from 'react-native';
+import { ListItem } from 'react-native-elements'
 import db from '../config'
-import * as firebase from 'firebase'
+import firebase from 'firebase'
 import MyHeader from '../components/MyHeader'
 export default class RequestScreen extends Component {
+  constructor() {
+    super()
+    this.state = {
+      requestedItemsList: []
+    }
+    this.requestRef = null
+  }
+
+  getRequestedItemsList = () => {
+    this.requestRef = db.collection("requested_items")
+      .onSnapshot((snapshot) => {
+        var requestedItemsList = snapshot.docs.map(document => document.data());
+        this.setState({
+          requestedItemsList: requestedItemsList
+        });
+      })
+  }
+  componentDidMount() {
+    this.getRequestedItemsList()
+  }
+
+  componentWillUnmount() {
+    this.requestRef();
+  }
+
+  keyExtractor = (item, index) => index.toString()
+  renderItem = ({ item, i }) => {
+    return (
+      <ListItem
+        key={i}
+        title={item.item_name}
+        subtitle={item.price + " " + "Rs"}
+        titleStyle={{ color: 'black', fontWeight: 'bold' }}
+        rightElement={
+          <TouchableOpacity style={styles.button}
+            onPress={() => {
+              this.props.navigation.navigate("RecieverDetail", { "details": item })
+            }}>
+            <Text style={{ color: '#ffff' }}>Trade</Text>
+          </TouchableOpacity>
+        }
+        bottomDivider
+      />
+    )
+  }
   render() {
     return (
-      <View >
-        <MyHeader title="Trade Item" navigation={this.props.navigation} />
-        <Text style={StyleSheet.container}></Text>
+      <View style={{ flex: 1 }}>
+        <MyHeader title="Let's Trade" navigation={this.props.navigation} />
+        <View style={{ flex: 1 }}>
+          {
+            this.state.requestedItemsList.length === 0
+              ? (
+                <View style={styles.subContainer}>
+                  <Text style={{ fontSize: 20 }}>List Of All Requests</Text>
+                </View>
+              )
+              : (
+                <FlatList
+                  keyExtractor={this.keyExtractor}
+                  data={this.state.requestedItemsList}
+                  renderItem={this.renderItem}
+                />
+              )
+          }
+        </View>
       </View>
     )
   }
 }
+
 const styles = StyleSheet.create({
-  container: {
+  subContainer: {
     flex: 1,
-    alignItems: 'center',
+    fontSize: 20,
     justifyContent: 'center',
+    alignItems: 'center'
   },
-  text: {
-    fontSize: 15,
-    marginTop: 10
-  },
-  scanButton: {
-
-    width: 150,
-    backgroundColor: 'lightblue',
-    borderRadius: 25,
-    borderColor: 'black',
-    borderWidth: 3,
-    fontWeight: 'bold',
-    fontSize: 15,
-    marginLeft: 'center',
-    marginRight: 'center',
-    textAlign: 'center',
-    marginTop: 10,
-  },
-
-
-  buttonText: {
-    fontWeight: 'bold',
-    fontSize: 15,
-
-  },
-  inputBox: {
-    width: 300,
-    height: 30,
-    marginTop: 10,
-    borderWidth: 1,
-    fontWeight: 'bold',
-    fontSize: 15,
-    borderWidth: 3,
-    borderRadius: 20,
-    borderColor: 'black',
-    lineHeight: 230,
-    marginLeft: 'center',
-    marginRight: 'center',
-    textAlign: 'center',
-  },
-  submitButton: {
-    height: 30,
-    width: 150,
-    backgroundColor: 'rgb(255, 190, 28)',
-    borderRadius: 25,
-    borderColor: 'black',
-    borderWidth: 4,
-    fontWeight: 'bold',
-    fontSize: 17,
-    marginLeft: 'center',
-    marginRight: 'center',
-    textAlign: 'center',
-    marginTop: 30,
-  },
-  bookImage: {
+  button: {
     width: 100,
-    height: 100,
-    alignItems: 'center',
+    height: 30,
     justifyContent: 'center',
-    marginLeft: 100
+    alignItems: 'center',
+    backgroundColor: "#ff5722",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 8
+    }
   }
-});
+})
+
+
