@@ -46,7 +46,7 @@ export default class RequestScreen extends Component {
         rightElement={
           <TouchableOpacity style={styles.button}
             onPress={() => {
-              this.props.navigation.navigate("RecieverDetail", { "details": item })
+              this.props.navigation.navigate("UserDetails", { "details": item })
             }}>
             <Text style={{ color: '#ffff' }}>Trade</Text>
           </TouchableOpacity>

@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
-import BrowseScreen from '../Screens/BrowseScreen'
+import { AppStackNavigator } from './AppStackNavigator'
 import UploadScreen from '../Screens/UploadScreen'
 import { createBottomTabNavigator } from 'react-navigation-tabs'
 
 export const TabNavigator = createBottomTabNavigator
   ({
     Browse: {
-      screen: BrowseScreen,
+      screen: AppStackNavigator,
       navigationOptions: {
         tabBarIcon: <Image
           source={require("../assets/browse.png")}

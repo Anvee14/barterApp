@@ -17,12 +17,12 @@ export default class BookRequestScreen extends Component {
   }
   addRequest = (itemName, price) => {
     var userId = this.state.userId
-    var randomRequestId = this.createUniqueId()
+    var randomExchangeId = this.createUniqueId()
     db.collection('requested_items').add({
       "user_id": userId,
       "item_name": itemName,
       "price": price,
-      "request_id": randomRequestId,
+      "exchange_id": randomExchangeId,
     })
 
     this.setState({
@@ -63,7 +63,7 @@ export default class BookRequestScreen extends Component {
             style={styles.button}
             onPress={() => { this.addRequest(this.state.itemName, this.state.price) }}
           >
-            <Text>Request</Text>
+            <Text>Add Item</Text>
           </TouchableOpacity>
         </KeyboardAvoidingView>
 
